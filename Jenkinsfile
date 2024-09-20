@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run Compiled Output') {
             when {
-                expression { currentBuild.currentResult == 'SUCCESS' } // Check if the current result is 'SUCCESS'
+                expression { currentBuild.result == 'SUCCESS' } // Check if the current result is 'SUCCESS'
             }
             steps {
                 script {
@@ -63,4 +63,21 @@ pipeline {
 
         stage('Rollback') {
             when {
-                expression { curr
+                expression { currentBuild.result == 'FAILURE' } // Check if the current result is 'FAILURE'
+            }
+            steps {
+                script {
+                    // Perform rollback actions here
+                    echo 'Rolling back to the previous build...'
+                    sh 'git checkout HEAD^' // Checkout the previous commit
+                }
+            }
+        }
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *') // Poll SCM every 5 minutes
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '2')) // Keep the last 2
