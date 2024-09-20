@@ -1,25 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:16'  // Use Node.js 16.x Docker image
+            args '-u root'   // Run as root user to avoid permission issues
+        }
+    }
 
     stages {
         stage('Clone Repository') {
             steps {
                 git url: 'https://github.com/prathammore0025/TypeScript-Build.git', branch: 'dev'
-            }
-        }
-
-        stage('Install Node.js') {
-            steps {
-                script {
-                    // Install Node.js
-                    sh '''
-                        # Install Node.js and npm
-                        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-                        sudo apt-get install -y nodejs
-                        node -v
-                        npm -v
-                    '''
-                }
             }
         }
 
@@ -39,15 +29,14 @@ pipeline {
                     sh 'npm run build'
                 }
             }
-            post {
-                success {
-                    echo 'Build succeeded!'
-                }
-                failure {
-                    echo 'Build failed. Rolling back...'
-                    // Optionally, you can implement a rollback strategy here
-                }
-            }
         }
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
     }
 }
