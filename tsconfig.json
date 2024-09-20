@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./build",        // Output directory for compiled files
+    "outDir": "./dist",        // Output directory for compiled files
     "rootDir": "./src",         // Root directory of TypeScript source files
     "target": "ES6",            // JavaScript version to compile down to
     "module": "commonjs",       // Module system used in the output
