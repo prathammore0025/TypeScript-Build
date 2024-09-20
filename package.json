@@ -2,7 +2,7 @@
   "name": "demo-typescript-project",
   "version": "1.0.0",
   "description": "A simple demo TypeScript project",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "npm run clean && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
