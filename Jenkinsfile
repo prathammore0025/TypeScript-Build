@@ -28,6 +28,18 @@ pipeline {
             }
         }
 
+        stage('Run Compiled Output') {
+            when {
+                expression { currentBuild.result == 'SUCCESS' }
+            }
+            steps {
+                script {
+                    // Run the compiled project
+                    sh 'node dist/index.js' // Update if necessary, based on your output directory
+                }
+            }
+        }
+
         stage('Push Artifact') {
             when {
                 expression { currentBuild.result == 'SUCCESS' }
@@ -37,7 +49,7 @@ pipeline {
                     // Configure Git
                     sh 'git config user.email "you@example.com"'
                     sh 'git config user.name "Your Name"'
-                    sh 'git add ./build/*' // Add your build artifacts
+                    sh 'git add ./dist/*' // Add your build artifacts (change to dist)
                     sh 'git commit -m "Add new build artifacts"'
                     sh 'git push origin dev'
                 }
