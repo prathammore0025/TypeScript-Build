@@ -80,4 +80,6 @@ pipeline {
     }
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: '2')) // Keep the last 2
+        buildDiscarder(logRotator(numToKeepStr: '2')) // Keep the last 2 builds
+    }
+}
