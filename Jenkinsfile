@@ -30,7 +30,7 @@ pipeline {
 
         stage('Run Compiled Output') {
             when {
-                expression { currentBuild.result == 'SUCCESS' }
+                expression { currentBuild.currentResult == 'SUCCESS' } // Check if the current result is 'SUCCESS'
             }
             steps {
                 script {
@@ -42,14 +42,14 @@ pipeline {
 
         stage('Push Artifact') {
             when {
-                expression { currentBuild.result == 'SUCCESS' }
+                expression { currentBuild.currentResult == 'SUCCESS' } // Check if the current result is 'SUCCESS'
             }
             steps {
                 script {
                     // Configure Git
                     sh 'git config user.email "you@example.com"'
                     sh 'git config user.name "Your Name"'
-                    sh 'git add ./dist/*' // Add your build artifacts (change to dist)
+                    sh 'git add ./dist/*' // Add your build artifacts
                     sh 'git commit -m "Add new build artifacts"'
                     sh 'git push origin dev'
                 }
@@ -58,7 +58,7 @@ pipeline {
 
         stage('Rollback') {
             when {
-                expression { currentBuild.result == 'FAILURE' }
+                expression { currentBuild.currentResult == 'FAILURE' } // Check if the current result is 'FAILURE'
             }
             steps {
                 script {
