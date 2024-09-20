@@ -12,13 +12,13 @@ pipeline {
             steps {
                 script {
                     // Install Node.js
-                    sh '''
+                    #sh '''
                     # Install Node.js and npm
-                    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-                    sudo apt-get install -y nodejs
-                    node -v
-                    npm -v
-                    '''
+                    #curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+                    #sudo apt-get install -y nodejs
+                    #node -v
+                    #npm -v
+                    #'''
                 }
             }
         }
