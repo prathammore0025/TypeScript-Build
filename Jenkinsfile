@@ -7,7 +7,7 @@ pipeline {
                 git url: 'https://github.com/prathammore0025/TypeScript-Build.git', branch: 'dev'
             }
         }
-/*
+
         stage('Install Node.js') {
             steps {
                 script {
@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-*/
+
         stage('Setup Environment') {
             steps {
                 script {
