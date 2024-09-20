@@ -7,26 +7,26 @@ pipeline {
                 git url: 'https://github.com/prathammore0025/TypeScript-Build.git', branch: 'dev'
             }
         }
-
+/*
         stage('Install Node.js') {
             steps {
                 script {
                     // Install Node.js
-                    #sh '''
-                    # Install Node.js and npm
-                    #curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-                    #sudo apt-get install -y nodejs
-                    #node -v
-                    #npm -v
-                    #'''
+                    sh '''
+                        # Install Node.js and npm
+                        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+                        sudo apt-get install -y nodejs
+                        node -v
+                        npm -v
+                    '''
                 }
             }
         }
-
+*/
         stage('Setup Environment') {
             steps {
                 script {
-                    // Clean the build directory if it exists
+                    // Install dependencies
                     sh 'npm install'
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Clean previous builds and build the project
+                    // Build the project
                     sh 'npm run build'
                 }
             }
@@ -49,6 +49,5 @@ pipeline {
                 }
             }
         }
-    }
     }
 }
