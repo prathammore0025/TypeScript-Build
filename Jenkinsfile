@@ -20,8 +20,39 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build the project
-                    sh 'npm run build'
+                    // Build the project and handle errors
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                        sh 'npm run build'
+                    }
+                }
+            }
+        }
+
+        stage('Push Artifact') {
+            when {
+                expression { currentBuild.result == 'SUCCESS' }
+            }
+            steps {
+                script {
+                    // Configure Git
+                    sh 'git config user.email "you@example.com"'
+                    sh 'git config user.name "Your Name"'
+                    sh 'git add ./build/*' // Add your build artifacts
+                    sh 'git commit -m "Add new build artifacts"'
+                    sh 'git push origin dev'
+                }
+            }
+        }
+
+        stage('Rollback') {
+            when {
+                expression { currentBuild.result == 'FAILURE' }
+            }
+            steps {
+                script {
+                    // Perform rollback actions here
+                    echo 'Rolling back to the previous build...'
+                    sh 'git checkout HEAD^' // Checkout the previous commit
                 }
             }
         }
@@ -32,6 +63,6 @@ pipeline {
     }
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+        buildDiscarder(logRotator(numToKeepStr: '2'))
     }
 }
