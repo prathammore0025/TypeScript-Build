@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-     environment {
+    environment {
         GITHUB_TOKEN = credentials('GITHUB_TOKEN') // Use the credentials ID created in Jenkins
     }
-    
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -46,15 +46,15 @@ pipeline {
 
         stage('Push Artifact') {
             when {
-                expression { currentBuild.currentResult == 'SUCCESS' } // Check if the current result is 'SUCCESS'
+                expression { currentBuild.result == 'SUCCESS' } // Check if the build succeeded
             }
             steps {
                 script {
-                    // Configure Git
+                    // Configure Git with user details
                     sh 'git config user.email "you@example.com"'
                     sh 'git config user.name "Your Name"'
                     sh 'git remote set-url origin https://$GITHUB_TOKEN@github.com/prathammore0025/TypeScript-Build.git'
-                    sh 'git add ./dist/*' // Add your build artifacts
+                    sh 'git add dist/*' // Add your build artifacts from the correct folder
                     sh 'git commit -m "Add new build artifacts"'
                     sh 'git push origin dev'
                 }
@@ -63,23 +63,4 @@ pipeline {
 
         stage('Rollback') {
             when {
-                expression { currentBuild.currentResult == 'FAILURE' } // Check if the current result is 'FAILURE'
-            }
-            steps {
-                script {
-                    // Perform rollback actions here
-                    echo 'Rolling back to the previous build...'
-                    sh 'git checkout HEAD^' // Checkout the previous commit
-                }
-            }
-        }
-    }
-
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '2'))
-    }
-}
+                expression { curr
