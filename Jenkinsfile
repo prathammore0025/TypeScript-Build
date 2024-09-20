@@ -8,6 +8,21 @@ pipeline {
             }
         }
 
+        stage('Install Node.js') {
+            steps {
+                script {
+                    // Install Node.js
+                    sh '''
+                    # Install Node.js and npm
+                    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+                    sudo apt-get install -y nodejs
+                    node -v
+                    npm -v
+                    '''
+                }
+            }
+        }
+
         stage('Setup Environment') {
             steps {
                 script {
@@ -35,9 +50,5 @@ pipeline {
             }
         }
     }
-
-    options {
-        // Keep the last 5 builds
-        buildDiscarder(logRotator(numToKeepStr: '5'))
     }
 }
