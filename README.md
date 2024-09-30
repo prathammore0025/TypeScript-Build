@@ -49,3 +49,4 @@ node -v
 withCredentials([string(credentialsId: 'github_token', variable: 'GITHUB_TOKEN')]) {
     sh 'git remote set-url origin https://$GITHUB_TOKEN@github.com/username/repo.git'
 }
+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
